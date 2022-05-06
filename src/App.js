@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [randomQuote, setRandomQuotes] = useState({});
+  useEffect(() => {
+    generateQuote()
+  }, []);
+
+  //This gets a new random quote every time the button is pressed
+  const generateQuote = () => {
+    fetch("https://amarachiokereke-quote-server.glitch.me/quotes/random")
+      .then((res) => res.json())
+      .then((data) => {
+        setRandomQuotes(data);
+      });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Quote Server Project</h1>
+      <div className="container">
+        <h3>
+          "{randomQuote.quote} - {randomQuote.author}"
+        </h3>
+        <button onClick={generateQuote}> Random Quote! </button>
+      </div>
+      <hr/>
     </div>
   );
 }
